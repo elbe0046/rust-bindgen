@@ -1395,12 +1395,15 @@ impl Builder {
         if let Some(extra_clang_args) =
             env::var("BINDGEN_EXTRA_CLANG_ARGS").ok()
         {
+            panic!("BINDGEN_EXTRA_CLANG_ARGS present: {}", extra_clang_args);
             // Try to parse it with shell quoting. If we fail, make it one single big argument.
             if let Some(strings) = shlex::split(&extra_clang_args) {
                 self.options.clang_args.extend(strings);
             } else {
                 self.options.clang_args.push(extra_clang_args);
             };
+        } else {
+            panic!("BINDGEN_EXTRA_CLANG_ARGS not present");
         }
 
         // Transform input headers to arguments on the clang command line.
